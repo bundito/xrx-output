@@ -4,8 +4,8 @@ activeMode=""
 activeOutput=""
 modeline=0
 
-echo "<xml>" >> xrx.xml
-echo "<modelist>" >> xrx.xml
+echo "<xml>" 
+echo "<modelist>" 
 xrandr | while IFS= read -r line; do
   set -r
   set $line
@@ -34,22 +34,22 @@ xrandr | while IFS= read -r line; do
 
   if [[ $activeOutput != "" ]]
   then
-    echo "<modeline>" >> xrx.xml
-    echo "<display>$activeOutput</display>" >> xrx.xml
+    echo "<modeline>" 
+    echo "<display>$activeOutput</display>" 
     if [[ $freq =~ .*\*.* ]]
       then activeMode=$freq
-      echo "<mode>"$mode"</mode>" >> xrx.xml
-      echo "<current>true</current>" >> xrx.xml
+      echo "<mode>"$mode"</mode>" 
+      echo "<current>true</current>" 
       # echo $activeOutput $mode current
       else
       #echo $activeOutput $mode
-      echo "<mode>"$mode"</mode>" >> xrx.xml
-      echo "<current>false</current>" >> xrx.xml
+      echo "<mode>"$mode"</mode>" 
+      echo "<current>false</current>" 
     fi
-    echo "</modeline>" >> xrx.xml
+    echo "</modeline>" 
     let "modeline=modeline+1"
   fi
 
 done
-echo "</modelist>" >> xrx.xml
-echo "</xml>" >> xrx.xml
+echo "</modelist>" 
+echo "</xml>" 

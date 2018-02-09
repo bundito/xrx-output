@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import QtQml 2.2
@@ -27,13 +28,13 @@ Item {
    //path : window.location.pathname;
    //pathName : path.substring(0, path.lastIndexOf('/') +1);
 
-   Label {
-    id: main
-    text: "xRx"
+  // Label {
+  //  id: main
+  //  text: "xRx"
     //text: data.stdout
     //height: 400
     //width: 400
-  }
+  //}
 
   PlasmaCore.DataSource {
     id: xrxData
@@ -54,7 +55,6 @@ Item {
       ListModel {
        id: modeModel
 
-       Component.onCompleted: {
         for (var i = 0, len = modeList.length; i < len; i++ ) {
           var line = modeList[i]
           bits = line.split(" ");
@@ -65,24 +65,30 @@ Item {
           append(createListElement(output, rez, current));
         }
       }
-    }
+    
 
-    function createListElement(o, r, c) {
-     return {output: o, resolution: r, current: c};
-
-   }
+    
 
    ListView {
-    width: 150
-    model: modeModel 
-    delegate: Row {
-        Label {
-          text: resolution
-        }
-      }
+    width: 180
 
-   }
+    Component {
+      id: rowDelegate
+    
+    model: ListModel {id: modeModel}
+    delegate: PlasmaComponents.ListItem {
+        text: "resolution"
+    }
+  }
 
+
+}
+}
+   function createListElement(o, r, c) {
+    console.log(o, r, c);
+    return {output: o, resolution: r, current: c};
+
+  }
 
    MouseArea {
     id: mouseArea
@@ -99,5 +105,3 @@ Item {
     }
   }
 }
-
-
