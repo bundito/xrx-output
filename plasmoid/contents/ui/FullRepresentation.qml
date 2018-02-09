@@ -9,6 +9,9 @@ import QtQml 2.2
 
 Item {
 
+
+  var modes;
+  var modeList;
   //property string path;
   //property string pathName;
   //property string modeList;
@@ -28,14 +31,13 @@ Item {
   PlasmaCore.DataSource {
     id: xrxData
     engine: "executable"
-    connectedSources: []
-    //connectedSources: ['/home/bundito/projects/xrx-output/plasmoid/contents/ui/parse-xrx-output.sh']
+    var url=Qt.resolvedUrl(".");
+    var exec=url.substring(7,url.length);
+    connectedSources: ['bash -c "'+exec+'parse-xrx-output.sh"']
+    
     onNewData: {
-      var modes = data.stdout;
-      var modeList = modes.split("\n");
-      var mode = modeList[0];
-      console.log(mode);
-      main.text = mode
+      modes = data.stdout;
+      modeList = modes.split("\n");
     }
   }
 
@@ -47,7 +49,7 @@ Item {
          var rez = bits[1];
          var current = bits[2];
 
-         ListModel.append({"output": output, "rez": rez, "current": current})
+         ListElement {"output": output, "rez": rez, "current": current}
      }
  }
 

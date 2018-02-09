@@ -20,7 +20,7 @@ xrandr | while IFS= read -r line; do
 
   if [[ $2 =~ 'connected' ]] && [[ $3 != "primary" ]]
   then
-    activeOutput=""
+    #activeOutput=""
     continue
   fi
 
@@ -28,10 +28,13 @@ xrandr | while IFS= read -r line; do
   freq=$2
   prim=$3
 
+
+
   if [[ $activeOutput != "" ]]
   then
 
     if [[ $freq =~ .*\*.* ]]
+      
       then activeMode=$freq
       echo $activeOutput $mode current
       else
