@@ -10,9 +10,16 @@ import QtQml 2.2
 Item {
 
 
-  var modes;
-  var modeList;
-  //property string path;
+  property var modes: []
+  property var modeList: []
+  property var bits: []
+  property var rez: ""
+  property var output: ""
+  property var current: ""
+  
+  property var url:Qt.resolvedUrl(".");
+  property var exec:url.substring(7,url.length);
+  property string path;
   //property string pathName;
   //property string modeList;
   //property string mode;
@@ -20,7 +27,7 @@ Item {
    //path : window.location.pathname;
    //pathName : path.substring(0, path.lastIndexOf('/') +1);
 
-  Label {
+   Label {
     id: main
     text: "xRx"
     //text: data.stdout
@@ -31,41 +38,66 @@ Item {
   PlasmaCore.DataSource {
     id: xrxData
     engine: "executable"
-    var url=Qt.resolvedUrl(".");
-    var exec=url.substring(7,url.length);
+
     connectedSources: ['bash -c "'+exec+'parse-xrx-output.sh"']
-    
-    onNewData: {
-      modes = data.stdout;
-      modeList = modes.split("\n");
+        //connectedSources = [];
+
+        onNewData: {
+          modes = data.stdout;
+          modeList = modes.split("\n");
+          console.log(modes)
+        }
+
+
+      }
+
+      ListModel {
+       id: modeModel
+
+       Component.onCompleted: {
+        for (var i = 0, len = modeList.length; i < len; i++ ) {
+          var line = modeList[i]
+          bits = line.split(" ");
+          output = bits[0];
+          rez = bits[1];
+          current = bits[2];
+
+          append(createListElement(output, rez, current));
+        }
+      }
+    }
+
+    function createListElement(o, r, c) {
+     return {output: o, resolution: r, current: c};
+
+   }
+
+   ListView {
+    width: 150
+    model: modeModel 
+    delegate: Row {
+        Label {
+          text: resolution
+        }
+      }
+
+   }
+
+
+   MouseArea {
+    id: mouseArea
+    anchors.fill: parent
+
+    onClicked: {
+      if (mouse.button == Qt.LeftButton) {
+        plasmoid.expanded = !plasmoid.expanded;
+      }
+      var url=Qt.resolvedUrl(".");
+      var exec=url.substring(7,url.length);
+      xrxData.connectedSources = ['bash -c "'+exec+'parse-xrx-output.sh"'];
+      xrxData.connectedSources = [];
     }
   }
-
- ListModel {
-     id: modeModel
-     modeList.foreach: line {
-         var bits = line.split(" ");
-         var ouptput = bits[0];
-         var rez = bits[1];
-         var current = bits[2];
-
-         ListElement {"output": output, "rez": rez, "current": current}
-     }
- }
-
- MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-
-        onClicked: {
-            if (mouse.button == Qt.LeftButton) {
-                plasmoid.expanded = !plasmoid.expanded;
-            }
-            var url=Qt.resolvedUrl(".");
-            var exec=url.substring(7,url.length);
-            xrxData.connectedSources = ['bash -c "'+exec+'parse-xrx-output.sh"'];
-            xrxData.connectedSources = [];
-        }
-    }
 }
-s
+
+
