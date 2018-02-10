@@ -21,87 +21,46 @@ Item {
   property var url:Qt.resolvedUrl(".");
   property var exec:url.substring(7,url.length);
   property string path;
-  //property string pathName;
-  //property string modeList;
-  //property string mode;
 
-   //path : window.location.pathname;
-   //pathName : path.substring(0, path.lastIndexOf('/') +1);
 
-  // Label {
-  //  id: main
-  //  text: "xRx"
-    //text: data.stdout
-    //height: 400
-    //width: 400
-  //}
+  
+
+  ListView {
+
+    ListModel {id: modeModel}
+
+    delegate: Row {
+      Label {
+       width: 150
+       height: 30
+       text: "modeModel.mode"
+     }
+
+    }
 
   PlasmaCore.DataSource {
-    id: xrxData
-    engine: "executable"
+   id: xrxData
+   engine: "executable"
+     connectedSources: ['bash -c "'+exec+'parse-xrx-output.sh"']        //connectedSources = [];
 
-    connectedSources: ['bash -c "'+exec+'parse-xrx-output.sh"']
-        //connectedSources = [];
-
-        onNewData: {
-          modes = data.stdout;
-          modeList = modes.split("\n");
-          console.log(modes)
-        }
-
-
-      }
-
-      ListModel {
-       id: modeModel
-
-        for (var i = 0, len = modeList.length; i < len; i++ ) {
-          var line = modeList[i]
-          bits = line.split(" ");
-          output = bits[0];
-          rez = bits[1];
-          current = bits[2];
-
-          append(createListElement(output, rez, current));
-        }
-      }
-    
-
-    
-
-   ListView {
-    width: 180
-
-    Component {
-      id: rowDelegate
-    
-    model: ListModel {id: modeModel}
-    delegate: PlasmaComponents.ListItem {
-        text: "resolution"
-    }
-  }
+     onNewData: {
+       modes = data.stdout;
+       modeList = modes.split("\n");
+       console.log(modes)
+       for (var i = 0, len = modeList.length; i < len; i++ ) {
+         var line = modeList[i]
+         addToModeModel(line);
+       } // end for
 
 
-}
-}
-   function createListElement(o, r, c) {
-    console.log(o, r, c);
-    return {output: o, resolution: r, current: c};
+     } // end onNewData
 
-  }
+     function addToModeModel(entry) {
+       modeModel.append({"mode": entry});
+     }
 
-   MouseArea {
-    id: mouseArea
-    anchors.fill: parent
+     } // end DataSource
 
-    onClicked: {
-      if (mouse.button == Qt.LeftButton) {
-        plasmoid.expanded = !plasmoid.expanded;
-      }
-      var url=Qt.resolvedUrl(".");
-      var exec=url.substring(7,url.length);
-      xrxData.connectedSources = ['bash -c "'+exec+'parse-xrx-output.sh"'];
-      xrxData.connectedSources = [];
-    }
-  }
+} // end Item
+
 }
