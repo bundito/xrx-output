@@ -1,0 +1,92 @@
+import QtQuick 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.extras 2.0 as PlasmaExtras
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.1 as Layout
+import QtQml 2.2
+import QtQml.Models 2.2
+
+
+
+Item {
+
+  property var url:Qt.resolvedUrl(".");
+  property var exec:url.substring(7,url.length);
+  property string path;
+
+  Layout.ColumnLayout {
+    width: 200
+    height: 500
+
+  //var modes = [];
+  //var modeList = [];
+  //property var bits: []
+  //property var rez: ""
+  //property var output: ""
+  //property var current: ""
+    ListModel {
+      id: modeModel
+
+ListElement {
+  mode: "high"
+}
+
+ListElement {
+  mode: "low"
+}
+
+    }
+  
+
+  PlasmaCore.DataSource {
+    id: xrxData
+    engine: "executable"
+    connectedSources: ['bash -c "'+exec+'parse-xrx-output.sh"']        //connectedSources = [];
+
+    onNewData: {
+      var modes = data.stdout;
+      var modeList = modes.split("\n");
+      console.log(modes)
+      for (var i = 0, len = modeList.length; i < len; i++ ) {
+        var line = modeList[i]
+        //modeModel.append(Text ({text: line}))
+        //addToModeModel(line);
+      } // end for
+
+
+    } // end onNewData
+
+   // function addToModeModel(entry) {
+    //  console.log("addToModeModel", entry);
+    //  modeModel.append(ListElement {"mode": entry});
+   // }
+
+    } // end DataSource
+
+
+    ListElement {
+      id: modeDelegate
+      text: modeModel.mode}
+      
+      
+    }
+
+    ListView {
+      anchors.fill: parent
+      model: modeModel
+      delegate: modeDelegate
+     }
+
+     //console.log("delegate ", ListModel.mode);
+
+
+
+   }
+
+
+
+
+// end Item
+
+
