@@ -1,0 +1,97 @@
+Modes Listing. Adding MouseAreas.
+
+# --------------
+# Please enter the commit message for your changes. Everything below
+# this paragraph is ignored, and an empty message aborts the commit.
+# Just close the window to accept your message.
+diff --git a/plasmoid/contents/ui/FullRepresentation.qml b/plasmoid/contents/ui/FullRepresentation.qml
+index 00de152..b6abe66 100644
+--- a/plasmoid/contents/ui/FullRepresentation.qml
++++ b/plasmoid/contents/ui/FullRepresentation.qml
+@@ -1,4 +1,4 @@
+-  import QtQuick 2.0
++  import QtQuick 2.7
+   import org.kde.plasma.core 2.0 as PlasmaCore
+   import org.kde.plasma.components 2.0 as PlasmaComponents
+   import org.kde.plasma.extras 2.0 as PlasmaExtras
+@@ -19,17 +19,38 @@ Item{
+     }
+    
+     Rectangle {
+-    width: 180; height: 600
++    width: 150; height: 500
+ 
+     Component {
+         id: modeDelegate
+         Item {
+-            width: 180
+-            height: 20
++            width: implicitWidth
++            height: theme.defaultFont.pixelSize * 1.5
++
+             Column {
+                 //Text { text: '<b>Output:</b> ' + output }
+-                Text { text: '<b>Mode:</b> ' + mode }
+-                //Text { text: '<b>Current:</b> ' + current }
++                Grid{
++                  anchors.fill: parent
++                  columns: 2
++                  rows: 1
++
++                  Text{ text: mode
++
++                        rightPadding: 5
++                        horizontalAlignment: Qt.alignHCenter 
++                      }
++                        //font: theme.font.defaultFont }
++                  Image {source: current == "current" ? "emblem-checked.svg" : "";
++                         height: theme.defaultFont.pixelSize * 1.5
++                         width: theme.defaultFont.pizelSize * 3.0
++                         //fillMode: Image.preserveAspectFit; clip: true
++                         //horizontalAlignment: Qt.alignHCenter 
++                         }
++
++                  MouseArea {
++                    
++                  }
++                }
+             }
+         }
+     }
+@@ -64,4 +85,4 @@ Item{
+         focus: true
+     }
+ }
+-}
+\ No newline at end of file
++}
+diff --git a/plasmoid/contents/ui/FullRepresentation.qmlc b/plasmoid/contents/ui/FullRepresentation.qmlc
+index a310c50..bde9c1c 100644
+Binary files a/plasmoid/contents/ui/FullRepresentation.qmlc and b/plasmoid/contents/ui/FullRepresentation.qmlc differ
+diff --git a/plasmoid/contents/ui/emblem-checked.svg b/plasmoid/contents/ui/emblem-checked.svg
+new file mode 100644
+index 0000000..b1d2ad1
+--- /dev/null
++++ b/plasmoid/contents/ui/emblem-checked.svg
+@@ -0,0 +1,18 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8">
++  <defs id="defs3051">
++    <style type="text/css" id="current-color-scheme">
++      .ColorScheme-PositiveText {
++        color:#27ae60;
++      }
++      </style>
++  </defs>
++  <path
++      style="fill:currentColor;fill-opacity:1;stroke:none" 
++     class="ColorScheme-PositiveText"
++    d="M 4 0 C 1.784 0 0 1.784 0 4 C 0 6.216 1.784 8 4 8 C 6.216 8 8 6.216 8 4 C 8 1.784 6.216 0 4 0 z "
++      />
++    <path
++       style="fill:#ffffff;fill-opacity:1;stroke:none"
++       d="M 6 2 L 3 5 L 2 4 L 1 5 L 2 6 L 3 7 L 7 3 L 6 2 z "
++        />
++</svg>
+diff --git a/plasmoid/contents/ui/main.qmlc b/plasmoid/contents/ui/main.qmlc
+index 29c0d9d..fc79fa0 100644
+Binary files a/plasmoid/contents/ui/main.qmlc and b/plasmoid/contents/ui/main.qmlc differ

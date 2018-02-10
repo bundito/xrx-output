@@ -1,4 +1,4 @@
-  import QtQuick 2.0
+  import QtQuick 2.7
   import org.kde.plasma.core 2.0 as PlasmaCore
   import org.kde.plasma.components 2.0 as PlasmaComponents
   import org.kde.plasma.extras 2.0 as PlasmaExtras
@@ -19,17 +19,38 @@ Item{
     }
    
     Rectangle {
-    width: 180; height: 600
+    width: 150; height: 500
 
     Component {
         id: modeDelegate
         Item {
-            width: 180
-            height: 20
+            width: implicitWidth
+            height: theme.defaultFont.pixelSize * 1.5
+
             Column {
                 //Text { text: '<b>Output:</b> ' + output }
-                Text { text: '<b>Mode:</b> ' + mode }
-                //Text { text: '<b>Current:</b> ' + current }
+                Grid{
+                  anchors.fill: parent
+                  columns: 2
+                  rows: 1
+
+                  Text{ text: mode
+
+                        rightPadding: 5
+                        horizontalAlignment: Qt.alignHCenter 
+                      }
+                        //font: theme.font.defaultFont }
+                  Image {source: current == "current" ? "emblem-checked.svg" : "";
+                         height: theme.defaultFont.pixelSize * 1.5
+                         width: theme.defaultFont.pizelSize * 3.0
+                         //fillMode: Image.preserveAspectFit; clip: true
+                         //horizontalAlignment: Qt.alignHCenter 
+                         }
+
+                  MouseArea {
+                    
+                  }
+                }
             }
         }
     }
