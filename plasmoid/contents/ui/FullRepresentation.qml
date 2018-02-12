@@ -46,13 +46,14 @@ Item {
 
     width: theme.defaultFont.pixelSize * 7.6
     height: ((theme.defaultFont.pixelSize * 1.5) * modeModel.count) + 10
+    //anchors.fill: parent
 
     Component {
 
         id: modeDelegate
         Rectangle {
             id: currentItem
-            width: theme.defaultFont.pixelSize * 7.6
+            width: theme.defaultFont.pixelSize * 8
             height: theme.defaultFont.pixelSize * 1.5
 
 
@@ -79,26 +80,37 @@ Item {
                 //Text { text: '<b>Output:</b> ' + output }
                 Grid {
                   //anchors.fill: parent
-                  columns: 2
+                  columns: 3
                   rows: 1
-                  padding: 5
+                  height: theme.defaultFont.pixelSize * 1.5
+                  rightPadding: 20
+                  leftPadding: 10
+                  //padding: 10
                   //verticalAlignment: Qt.alignVCenter
 
 
                   Text{ text: mode
+                         //margins: 10
+                         height: parent.height
+                          verticalAlignment: Text.AlignVCenter
+                          color: theme.font.color
 
-                        rightPadding: 10
+                        //rightPadding: 10
+                        //bottomPadding: theme.defaultFont.pixelSize * .25
                         //position: PlasmaCore.CenterPositioned
                       }
+
+                    Text { text: "  "}
                         //font: theme.font.defaultFont }
                   Image {source: current == "current" ? "emblem-checked.svg" : "";
-                         
+                         smooth: true
+                        verticalAlignment: Text.AlignVCenter
+                         //height: parent.height * .75
+                         height: parent.height *.75
+                         width: height
 
-                         //height: theme.defaultFont.pixelSize * 1.5
-                         //width: theme.defaultFont.pizelSize * 3.0
-                         sourceSize.height: theme.defaultFont.pixelSize 
-                         //fillMode: preserveAspectFit
-                         } 
+                         //sourceSize.height: theme.defaultFont.pixelSize 
+                                                  } 
                     //fullRoot.height: displayRect.height;
               }
              
@@ -179,7 +191,7 @@ Item {
       console.log(old_mode);
      // genericDialog.open();
      // redDialog.text = mode;
-      var xrandr_str = "xrandr --output " + display + " --mode " + mode + "&& /bin/bash sleep 1";
+      var xrandr_str = "xrandr --output " + display + " --mode " + mode ;
       doXrandr.connectedSources = xrandr_str;
       modeModel.clear();
       //xrxData.connectedSources = xrxDataSource;
