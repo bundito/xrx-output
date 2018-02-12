@@ -3,6 +3,8 @@
 activeMode=""
 activeOutput=""
 
+sleep .1
+
 xrandr | while IFS= read -r line; do
   set -r
   set $line
@@ -44,3 +46,4 @@ xrandr | while IFS= read -r line; do
   fi
 
 done
+exit 0

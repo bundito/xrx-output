@@ -10,7 +10,13 @@
 
 
 
-Item{
+Item { 
+
+  id: fullRoot
+
+    width: theme.defaultFont.pixelSize * 7.6
+    height: ((theme.defaultFont.pixelSize * 1.5) * 20) + 10
+  
 
     property var url:Qt.resolvedUrl(".");
     property var exec:url.substring(7,url.length);
@@ -21,14 +27,23 @@ Item{
     property var old_mode;
     property var display;
     property var xrandr_str;
+    property var modeList;
+    property var xrxDataSource: 'bash -c "'+exec+'parse-xrx-output.sh"'
 
+    function loadColumn() {
+      xrxData.connectedSources = 'bash -c "'+exec+'parse-xrx-output.sh"'
+    }
 
+    
 
     ListModel {
       id: modeModel 
     }
    
     Rectangle {
+
+    id: displayRect
+
     width: theme.defaultFont.pixelSize * 7.6
     height: ((theme.defaultFont.pixelSize * 1.5) * modeModel.count) + 10
 
@@ -84,7 +99,7 @@ Item{
                          sourceSize.height: theme.defaultFont.pixelSize 
                          //fillMode: preserveAspectFit
                          } 
-
+                    //fullRoot.height: displayRect.height;
               }
              
               
@@ -104,12 +119,14 @@ Item{
    }
 
   
-
+   //Item {
+   // xrxData.connectedSources: 'bash -c "'+exec+'parse-xrx-output.sh"';
+  // }
 
     PlasmaCore.DataSource {
       id: xrxData
       engine: "executable"
-      connectedSources: ['bash -c "'+exec+'parse-xrx-output.sh"']        //connectedSources = [];
+      connectedSources: [xrxDataSource]        //connectedSources = [];
 
       onNewData: {
         var modes = data.stdout;
@@ -126,10 +143,15 @@ Item{
           if (line_current == "current") {old_mode = line_mode;}
 
           modeModel.append({output:line_output, mode:line_mode, current:line_current});
+          disconnectSource(xrxDataSource);
         } // end for
       } // end onNewData
     } // end DataSource
 
+
+    //Item {
+    // xrxData.connectedSources: 'bash -c "'+exec+'parse-xrx-output.sh"';
+    //}
 
     ListView {
         anchors.fill: parent
@@ -145,16 +167,31 @@ Item{
     id: doXrandr
     engine: "executable"
     connectedSources: []
+
+    onNewData: {
+      console.log("Changed");
+      disconnectSource(xrandr_str);
+    }
   }
 
   function doModeChange(mode) {
       console.log(display, mode);
-      //console.log(old_mode);
-      //genericDialog.open();
-      //redDialog.text = mode;
-      var xrandr_str = "xrandr -d " + display + " -o " + mode;
+      console.log(old_mode);
+     // genericDialog.open();
+     // redDialog.text = mode;
+      var xrandr_str = "xrandr --output " + display + " --mode " + mode + "&& /bin/bash sleep 1";
       doXrandr.connectedSources = xrandr_str;
-      doXrandr.connectedSources = [];
+      modeModel.clear();
+      //xrxData.connectedSources = xrxDataSource;
+      //xrxData.disconnectSource(xrxDataSource);
+      xrxData.connectedSources = xrxDataSource;
+      //modeModel.sync();
+
+      //displayRect.destroy()
+      //xrxData.connectedSources = ['bash -c "'+exec+'parse-xrx-output.sh"']
+      //modeModel.sync();
+     // doXrandr.connectedSources = "";
+      //xrxData.connectedSources = "";
       console.log(xrandr_str)
       
     }
