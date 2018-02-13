@@ -1,2 +1,6 @@
 *sublime*
 *.qmlc
+CompactRepresentation.qmlc
+ConfigRatios.qmlc
+FullRepresentation.qmlc
+main.qmlc
