@@ -3,13 +3,13 @@
 
 A simple plasmoid to change the resolution of your primary display. It uses a simple shell script to query 'xrandr' and get the available display resolutions. It has a configuration page to select which aspect ratios (16:10, 16:9, etc.) you prefer, and filters the list accordingly.
 
-To install, download the entire **org.kde.xrandr** directory into your personal plasmoid directory, which is
+To install, download the entire **com.bundito.xrandr** directory into your personal plasmoid directory, which is
 
     $HOME/.local/share/plasma/plasmoids
     
 Once copied, run this command to register it with the system:
 
-    kpackagetool5 --install org.kde.xrandr
+    kpackagetool5 --install com.bundito.xrandr
     
 It's meant for a horizontal panel (I keep it on top). 
 
