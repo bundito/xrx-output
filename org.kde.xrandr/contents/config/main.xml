@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+  http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="Ratios">
+    <entry name="r1610" type="bool">
+     <label>16:10</label>
+     <default>true</default>
+   </entry>
+   <entry name="r169" type="bool">
+    <label>16:9</label>
+    <default>true</default>
+  </entry>
+   <entry name="r54" type="bool">
+    <label>5:4</label>
+    <default>true</default>
+  </entry>
+   <entry name="r43" type="bool">
+    <label>4:3</label>
+    <default>true</default>
+  </entry>
+   <entry name="r32" type="bool">
+    <label>3:2</label>
+    <default>true</default>
+  </entry>
+   <entry name="rodd" type="bool">
+    <label>Unusual/Rare</label>
+    <default>true</default>
+  </entry>
+   <entry name="modeCount" type="int">
+    <label>Number Of Modes To Be Shown</label>
+    <default>2</default>
+  </entry>
+</group>
+
+</kcfg>
