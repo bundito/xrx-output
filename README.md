@@ -15,7 +15,7 @@ It's meant for a horizontal panel (I keep it on top).
 
 You may need to set the shell script to executable; that setting may not survive the round-trip to github and back.
 
-   chmod +x org.kde.xrandr/contents/ui/parse-xrx-output.sh
+    chmod +x org.kde.xrandr/contents/ui/parse-xrx-output.sh
    
 Like all open-source software, you can look at this shell script and see that it's not doing anything nefarious to your system. 
 
